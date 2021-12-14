@@ -1,4 +1,4 @@
-const path = require('path')
+// const path = require('path')
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
@@ -25,18 +25,11 @@ const knex = require('../data/db-config')
 
 const server = express();
 
-server.use(express.static(path.join(__dirname, '../client')))
-
-server.use(helmet());
-server.use(express.json());
-server.use(cors());
-
-server.use('/api/users', usersRouter)
-server.use('/api/auth', authRouter)
+// server.use(express.static(path.join(__dirname, '../client')))
 
 server.use(session({
-  name: 'sess',
-  secret: process.env.SESSION_SECRET || 'safe',
+  name: 'chocolatechip',
+  secret: 'shh',
   cookie: {
     maxAge: 1000 * 60 * 60,
     secure: false, 
@@ -52,6 +45,13 @@ server.use(session({
     clearInterval: 1000 * 60 * 60,
   })
 }))
+
+server.use(helmet());
+server.use(express.json());
+server.use(cors());
+
+server.use('/api/users', usersRouter)
+server.use('/api/auth', authRouter)
 
 server.get("/", (req, res) => {
   res.json({ api: "up" });

@@ -1,8 +1,7 @@
 // Require `checkUsernameFree`, `checkUsernameExists` and `checkPasswordLength`
 // middleware functions from `auth-middleware.js`. You will need them here!
-const express = require('express')
 const bcrypt = require('bcryptjs')
-const router = express.Router()
+const router = require('express').Router()
 const User = require('../users/users-model')
 const {
   checkUsernameFree, checkUsernameExists, checkPasswordLength
@@ -85,18 +84,18 @@ const {
   }
  */
 
-  router.get('/logout', checkPasswordLength,  (req, res, next) => {
+  router.get('/logout',  (req, res, next) => {
       if (req.session.user) {
         req.session.destroy((err) => {
           if (err) {
-            res.json(err)
+            next(err)
           } else {
-            // manually set a cookie with an exp date in the past
-            res.json({message:'logged out'})
+            
+            res.json({message:'logged out', status:200})
           }
         })
       } else {
-        res.json({message:"no session"})
+        res.json({message:"no session", status:200})
       }
     
   })
