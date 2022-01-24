@@ -33,7 +33,7 @@ const {
     
       const { username, password } = req.body
       const hash = bcrypt.hashSync(password, 8) // 2^8 rounds
-      
+      //create password
       User.add({username, password: hash})
       .then(saved =>{
         res.status(201).json(saved)
@@ -62,6 +62,7 @@ const {
       
       if(bcrypt.compareSync(password, req.user.password)){
         req.session.user = req.user
+        //add user to session and check password matches
         res.json({message: `Welcome ${req.user.username}`})
       }else{
         next({status:401, message: 'Invalid credentials'})
@@ -86,6 +87,7 @@ const {
 
   router.get('/logout',  (req, res, next) => {
       if (req.session.user) {
+        //if the user exist within a session, destroy it
         req.session.destroy((err) => {
           if (err) {
             next(err)
